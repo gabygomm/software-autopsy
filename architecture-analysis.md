@@ -1,0 +1,2 @@
+análisis de arquitectura
+diagramas
