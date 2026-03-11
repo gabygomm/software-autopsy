@@ -9,8 +9,8 @@ Contiene información relacionada con los libros:
 - id
 - title
 - author
-- quantity
-- availability
+- totalQuantity
+- available
 
 Esta clase funciona como un **modelo de datos** que representa cada libro
 dentro del sistema de gestión de biblioteca.
@@ -22,13 +22,13 @@ Clase encargada de gestionar las operaciones relacionadas con los libros.
 
 Métodos principales:
 - addBook()
-- upgradeBookQty()
-- searchBookById()
-- searchBookByTitle()
-- searchBookByAuthor()
-- displayAllBooks()
-- checkoutBook()
-- checkinBook()
+- upgradeQuantity()
+- findById()
+- searchByTitle()
+- searchByAuthor()
+- getAllBooks()
+- issueBook()
+- returnBook()
 
 Esta clase actúa como un **repositorio en memoria**, utilizando
 estructuras del Java Collections Framework para almacenar y gestionar
@@ -42,11 +42,12 @@ Representa la entidad **Student** dentro del sistema.
 Contiene información como:
 - id
 - name
-- booksAssigned
+- issueBookIds
 
 También gestiona acciones relacionadas con el préstamo de libros:
-- borrowBook()
-- returnBook()
+- canIssueMore()
+- addIssuedBook()
+- removeIssuedBook()
 
 Esta clase modela a los estudiantes registrados en la biblioteca.
 
@@ -57,8 +58,8 @@ Clase encargada de gestionar las operaciones relacionadas con los estudiantes.
 
 Métodos principales:
 - registerStudent()
-- searchStudentById()
-- displayAllStudents()
+- findById()
+- getAllStudents()
 
 Esta clase se encarga de almacenar y gestionar los estudiantes
 registrados dentro del sistema.
@@ -70,14 +71,14 @@ Clase principal que contiene las funciones principales del sistema
 y el menú de interacción con el usuario.
 
 Permite realizar operaciones como:
-- add new book
-- upgrade book quantity
-- search book
-- display all books
-- register student
-- display all students
-- checkout book
-- checkin book
+- addBook
+- upgradeQuantity
+- searchBook
+- showAllBooks
+- registerStudent
+- showAllStudents
+- checkOutBook
+- checkInBook
 
 Esta clase actúa como el **punto central de control de la aplicación**,
 coordinando las operaciones entre libros, estudiantes y el usuario.
@@ -89,10 +90,10 @@ Clase encargada de validar las entradas del usuario y prevenir errores
 durante la ejecución del programa.
 
 Incluye validaciones como:
-- validación de opciones del menú
-- validación de ID
-- validación de números enteros
-- validación de entradas de texto
+- validateMenuChoice
+- validateID
+- validateIntegerInput
+- validateStringInput
 
 Su objetivo es evitar que el sistema falle cuando el usuario introduce
 datos inválidos.
