@@ -1,7 +1,7 @@
 # Análisis de Sistema
 
 ## Repositorio Analizado
-https://github.com/USUARIO/PROYECTO
+https://github.com/astha-gupta9/library-management-system.git
 
 ## Descripción General
 El proyecto analizado es un sistema desarrollado en Java cuyo objetivo es gestionar
