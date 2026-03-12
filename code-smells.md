@@ -1,18 +1,17 @@
 # Code Smell Analysis: Book.java
 ## 1. Data Class
 ### Código afectado:
-
-Java
+```
 public class Book {
     private int id;
     private String title;
-    // ... (campos y getters/setters para cada atributo)
+    /* // ... (campos y getters/setters para cada atributo) */
     public void setId(int id) { this.id = id; }
     public void setTitle(String title) { this.title = title; }
     public void setAuthor(String author) { this.author = author; }
     // ...
 }
-
+```
 ### Definición: 
 La clase se comporta como un simple almacén de datos. Al exponer todos sus campos mediante setters públicos, pierde el control sobre su propio estado interno.
 
