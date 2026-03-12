@@ -1,7 +1,7 @@
 # Code Smell Analysis: Book.java
 ## 1. Data Class
 ### Código afectado:
-```
+``` java
 public class Book {
     private int id;
     private String title;
@@ -17,7 +17,7 @@ La clase se comporta como un simple almacén de datos. Al exponer todos sus camp
 
 ## 2. Speculative Generality
 ### Código afectado:
-```
+``` java
 import librarymanagementsystem.BookRepository;
 import librarymanagementsystem.Student;
 import librarymanagementsystem.StudentRepository;
@@ -28,7 +28,7 @@ Se incluyen importaciones de clases que no se utilizan en ninguna parte del cuer
 
 ## 3. Redundant Conditional
 ### Código afectado:
-```
+``` java
 public boolean isAvailable() {
     if (getAvailable() > 0) return true;
     return false;
@@ -39,7 +39,7 @@ El uso de un if para retornar true o false basándose en una comparación es red
 
 ## 4. Dead Code
 ### Código afectado:
-```
+``` java
 //  System.out.println("Book is out of stock!");
 ```
 ### Definición: 
