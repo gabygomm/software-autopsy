@@ -45,4 +45,16 @@ El uso de un if para retornar true o false basándose en una comparación es red
 ### Definición: 
 Fragmentos de código comentados que permanecen en el archivo fuente. Esto genera ruido visual y debe ser eliminado en favor del control de versiones (Git).
 
+## 5. Primitive Obession
+### Código afectado:
+``` java
+    private int id;
+    private String title;
+    private String author;
+    private int totalQuantity;
+    private int available;
+```
+### Definición:
+Se usan tipos primitivos como int y String para representar conceptos del dominio como el identificador del libro, autor y cantidades, en lugar de tipos más específicos.
+
 ---
