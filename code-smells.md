@@ -13,7 +13,7 @@ public class Book {
     // ...
 }
 
-## Definición: 
+### Definición: 
 La clase se comporta como un simple almacén de datos. Al exponer todos sus campos mediante setters públicos, pierde el control sobre su propio estado interno.
 
 ## 2. Speculative Generality
@@ -25,7 +25,7 @@ import librarymanagementsystem.Student;
 import librarymanagementsystem.StudentRepository;
 import librarymanagementsystem.Library;
 
-## Definición: 
+### Definición: 
 Se incluyen importaciones de clases que no se utilizan en ninguna parte del cuerpo del archivo, lo que añade acoplamiento innecesario.
 
 ## 3. Redundant Conditional
@@ -37,7 +37,7 @@ public boolean isAvailable() {
     return false;
 }
 
-## Definición: 
+### Definición: 
 El uso de un if para retornar true o false basándose en una comparación es redundante, ya que la comparación > 0 ya es un valor booleano.
 
 ## 4. Dead Code
@@ -46,7 +46,7 @@ El uso de un if para retornar true o false basándose en una comparación es red
 Java
 //  System.out.println("Book is out of stock!");
 
-## Definición: 
+### Definición: 
 Fragmentos de código comentados que permanecen en el archivo fuente. Esto genera ruido visual y debe ser eliminado en favor del control de versiones (Git).
 
 ---
