@@ -193,3 +193,66 @@ Un método hace demasiadas tareas (validar, guardar y mostrar mensajes). Esto di
 
 --- 
 
+# Code Smell Analysis: ErrorHandling.java
+## 1. Long Method
+### Código afectado: 
+``` java
+public int validateMenuChoice(int val, String msg, Scanner sc) { ... }
+public int validateID(int val, String msg, Scanner sc) { ... }
+public int validateIntegerInput(int val, String msg, Scanner sc) { ... }
+public String validateStringInput(String val, String msg, Scanner sc) { ... }
+```
+### Definición: 
+El método realiza muchas acciones: lectura, conversión de tipos, validación de rango y mensajes de error. Esto dificulta la lectura y mantenimiento.
+
+## 2. Duplicated Code
+### Código afectado:
+``` java
+// Estructura idéntica en validateMenuChoice, validateID y validateIntegerInput
+while (true) {
+    try {
+        System.out.print(msg + " ");
+        String input = sc.nextLine();
+        val = Integer.parseInt(input);
+        if (val < min || val > max) { // ... lógica de rango ... }
+        break;
+    } catch (InputMismatchException e) { // ... }
+}
+```
+### Definición: 
+Se repite la misma estructura de control, manejo de excepciones y lectura de teclado en tres métodos diferentes. La única variación son los límites numéricos, lo que indica que la lógica debería ser parametrizada en un único método genérico.
+
+## 3. Magic Numbers
+### Código afectado:
+``` java
+if (val < 0 || val > 9)      // validateMenuChoice
+if (val < 100 || val > 1000) // validateID
+if (val < 0 || val > 100)    // validateIntegerInput
+```
+### Definición: 
+El uso de valores numéricos literales directamente en las comparaciones sin asignarles un nombre claro. Esto dificulta la comprensión de por qué esos números son los límites y complica el mantenimiento si las reglas de validación cambian.
+
+## 4. Primitive Obsession
+### Código afectado:
+``` java
+public int validateMenuChoice(int val, String msg, Scanner sc) { ... }
+public int validateID(int val, String msg, Scanner sc) { ... }
+public int validateIntegerInput(int val, String msg, Scanner sc) { ... }
+public String validateStringInput(String val, String msg, Scanner sc) { ... }
+```
+### Definición: 
+Se usan tipos primitivos (int, String) para representar datos que podrían tener objetos especializados que encapsulen reglas de validación.
+
+## 5. Inconsistent Exception Handling
+### Código afectado:
+``` java
+catch (InputMismatchException e) {
+    System.out.println("Invalid input. Please enter a valid number.");
+    sc.nextLine();
+}
+``` 
+### Definición: 
+Se intenta capturar InputMismatchException, pero Integer.parseInt() lanza NumberFormatException. Por eso el manejo de excepciones no es efectivo.
+
+---
+
