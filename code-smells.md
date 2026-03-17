@@ -256,3 +256,170 @@ Se intenta capturar InputMismatchException, pero Integer.parseInt() lanza Number
 
 ---
 
+# Code Smell Analysis: Library.java
+## 1. Long Method
+### Código afectado:
+``` java
+public void searchBook(Scanner sc, BookRepository bookRepo, ErrorHandling err) {
+    String query = err.validateStringInput("", "Search for the Book here:", sc);
+
+    List<Book> bookListByName = bookRepo.searchByTitle(query);
+    List<Book> bookListByAuthor = bookRepo.searchByAuthor(query);
+
+    ...
+
+    for (Book b : bookListByName) {
+        System.out.println(b.toString());
+    }
+
+    ...
+
+    for (Book b : bookListByAuthor) {
+        System.out.println(b.toString());
+    }
+
+    ...
+}
+``` 
+### Definición:
+El método searchBook está haciendo varias cosas: pedir datos, buscar libros por título y autor, verificar si se encontraron resultados y mostrar los libros en pantalla.
+
+## 2. Long Parameter List
+### Código afectado:
+``` java
+public void checkOutBook(Scanner sc, BookRepository bookRepo,
+                         StudentRepository studRepo, ErrorHandling err)
+
+public void checkInBook(Scanner sc, BookRepository bookRepo,
+                        StudentRepository studRepo, ErrorHandling err)
+``` 
+### Definición:
+Los métodos necesitan varios objetos externos (Scanner, BookRepository, StudentRepository, ErrorHandling) para poder funcionar.
+
+## 3. Feature Envy
+### Código afectado:
+```  java
+Book b = bookRepo.findById(bookId);
+Student s = studRepo.findById(studId);
+
+if (s == null || b == null || !b.isAvailable() || !s.canIssueMore()) {
+    System.out.println("Book can't be issued!");
+    return;
+}
+...
+bookRepo.issueBook(bookId);
+s.addIssuedBook(bookId, bookRepo);
+``` 
+### Definición:
+El método checkOutBook usa constantemente métodos y datos de Book, Student y BookRepository para tomar decisiones y realizar acciones.
+
+## 4. Primitive Obsession
+### Código afectado:
+``` java
+int bookId = err.validateID(-1, "Enter Book Id:", sc);
+int studId = err.validateID(-1, "Enter Student Id:", sc);
+```
+### Definición:
+Los IDs de libros y estudiantes se están manejando directamente como int dentro de los métodos.
+
+## 5. Large Class
+### Código afectado: 
+``` java
+public class Library {
+
+    public void addBook(...) { ... }
+
+    public void upgradeQuantity(...) { ... }
+
+    public void searchBook(...) { ... }
+
+    public void registerStudent(...) { ... }
+
+    public void checkOutBook(...) { ... }
+
+    public void checkInBook(...) { ... }
+
+    public static void main(...) { ... }
+}
+```
+### Definición:
+La clase Library contiene métodos para gestionar libros, estudiantes, préstamos, devoluciones y el menú del sistema. Si algo cambia en la interfaz o en la base de datos, esta clase se rompe.
+
+## 6. Duplicate Code
+### Código afectado:
+``` java
+System.out.println("Books by same Name:");
+for (Book b : bookListByName) {
+    System.out.println(b.toString());
+}
+...
+System.out.println("Books by same Author Name:");
+for (Book b : bookListByAuthor) {
+    System.out.println(b.toString());
+}
+...
+if (!isBookFound) System.out.println("None");
+else System.out.println();
+Definición
+```
+### Definición: 
+Dentro del método searchBook se repite la misma lógica para mostrar resultados de búsqueda y recorrer listas de libros, además de repetirse la verificación para mostrar "None" cuando no se encuentran resultados. Estas estructuras aparecen varias veces dentro del mismo método.
+
+## 7. Switch Statements
+### Código afectado:
+``` java
+while (true) {
+    int option = err.validateMenuChoice(-1, library.showMenu(), sc);
+
+    switch (option) {
+        case 0:
+            System.out.println("Exiting Application...");
+            System.exit(0);
+        case 1:
+            library.addBook(sc, bookRepo, err);
+            break;
+        case 2:
+        ...
+        default:
+            System.out.println("Invalid input");
+    }
+}
+```
+### Definición
+El flujo del programa depende de un switch con muchas opciones del menú, donde cada caso ejecuta una acción diferente de la clase Library.
+Toda la lógica de decisiones del sistema está concentrada en este switch.
+
+## 8. Data Clump (Grupo de Datos)
+### Código afectado:
+``` java
+// En addBook:
+public void addBook(Scanner sc, BookRepository bookRepo, ErrorHandling err)
+
+// En upgradeQuantity:
+public void upgradeQuantity(Scanner sc, BookRepository bookRepo, ErrorHandling err)
+
+// En searchBook:
+public void searchBook(Scanner sc, BookRepository bookRepo, ErrorHandling err)
+```
+### Definición: 
+Cuando ves que un grupo de variables siempre viajan juntas como mejores amigas. Scanner, BookRepository y ErrorHandling aparecen en casi todas las firmas de los métodos. Deberían ser atributos globales de la clase.
+
+## 9. Inappropriate Intimacy
+### Código afectado:
+``` java
+Book b = bookRepo.findById(bookId);
+Student s = studRepo.findById(studId);
+
+if (!s.getIssuedBookIds().contains(bookId)) {
+    System.out.println(s.getName() + " didn't issue this book!");
+    return;
+}
+
+bookRepo.returnBook(bookId);
+s.removeIssuedBook(bookId, bookRepo);
+```
+### Definición:
+El método checkInBook está accediendo directamente a la estructura interna de Student y Book, manipulando sus datos internos en lugar de usar métodos de alto nivel que encapsulen la lógica.
+Hay una relación demasiado estrecha entre Library y Student/Book, rompiendo la independencia de las clases.
+
+---
