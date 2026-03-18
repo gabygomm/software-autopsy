@@ -431,3 +431,36 @@ static final int MAX_ISSUED = 10;
 El número 10 se usa como límite de libros emitidos. Aunque está declarado como constante, sigue siendo un valor arbitrario "mágico" que puede necesitar explicación o parametrización para mayor flexibilidad.
 
 ---
+
+# Code Smell Analysis: StudentRepository.java
+## 1. Data Class
+### Código afectado:
+``` java
+private static Map<Integer, Student> studentMap = new HashMap<>();
+
+public List<Student> getAllStudents() {
+    return new ArrayList<Student>(studentMap.values());
+}
+```
+### Definición:
+La clase solo almacena y devuelve datos sin lógica compleja, lo que indica que es una clase de datos.
+
+## 2. Inappropriate Intimacy
+Código afectado:
+``` java
+if (!studentMap.containsKey(s.getId())) {
+    studentMap.put(s.getId(), s);
+}
+```
+### Definición:
+La clase accede directamente a los detalles internos de Student, creando una relación demasiado estrecha entre clases y rompiendo la encapsulación.
+
+## 3. Duplicate Code
+### Código afectado:
+``` java
+System.out.println("Student registered successfully!");
+System.out.println("Student already registered!");
+System.out.println("Student not registered!");
+``` 
+### Definición:
+Se repite el patrón de imprimir mensajes en diferentes métodos. Esto puede extraerse a un método privado para reducir duplicación y mejorar la mantenibilidad.
