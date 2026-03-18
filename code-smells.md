@@ -422,4 +422,12 @@ s.removeIssuedBook(bookId, bookRepo);
 El método checkInBook está accediendo directamente a la estructura interna de Student y Book, manipulando sus datos internos en lugar de usar métodos de alto nivel que encapsulen la lógica.
 Hay una relación demasiado estrecha entre Library y Student/Book, rompiendo la independencia de las clases.
 
+## 10. Magic Number
+### Código afectado:
+``` java
+static final int MAX_ISSUED = 10;
+```
+### Definición:
+El número 10 se usa como límite de libros emitidos. Aunque está declarado como constante, sigue siendo un valor arbitrario "mágico" que puede necesitar explicación o parametrización para mayor flexibilidad.
+
 ---
